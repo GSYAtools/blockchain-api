@@ -1,0 +1,95 @@
+:root {
+  --bg: #f5f6fa;
+  --text: #2f3640;
+  --card: #ffffff;
+  --table-head: #f1f2f6;
+  --button: #2d98da;
+  --button-hover: #2270aa;
+  --green: #44bd32;
+  --green-hover: #3a9942;
+}
+
+body.dark {
+  --bg: #1e272e;
+  --text: #f5f6fa;
+  --card: #2f3640;
+  --table-head: #353b48;
+  --button: #00a8ff;
+  --button-hover: #0090dd;
+  --green: #4cd137;
+  --green-hover: #44bd32;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: var(--card);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.btn-top {
+  background-color: var(--button);
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95em;
+}
+.btn-top:hover {
+  background-color: var(--button-hover);
+}
+
+main {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+}
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+}
+th {
+  background-color: var(--table-head);
+}
+td button {
+  background-color: var(--green);
+  font-size: 0.9em;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+td button:hover {
+  background-color: var(--green-hover);
+}
+
+h2 {
+  margin-top: 0;
+}

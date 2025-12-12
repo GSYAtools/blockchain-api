@@ -1,0 +1,85 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Arquitectura Detallada Hyperledger + API" id="detailedFabricArch">
+    <mxGraphModel dx="1230" dy="720" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Cliente -->
+        <mxCell id="client" value="Cliente externo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF" vertex="1" parent="1">
+          <mxGeometry x="60" y="200" width="130" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- API -->
+        <mxCell id="api" value="API REST&#xa;Node.js + Express&#xa;fabric-network SDK&#xa;• POST /guardar-json&#xa;• GET /leer-json/:txid" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366" vertex="1" parent="1">
+          <mxGeometry x="220" y="180" width="200" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- Persistencia -->
+        <mxCell id="store" value="Archivo local&#xa;tx-registros.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656" vertex="1" parent="1">
+          <mxGeometry x="220" y="320" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- HLF background -->
+        <mxCell id="fabricBg" value="Hyperledger Fabric" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="460" y="60" width="540" height="360" as="geometry"/>
+        </mxCell>
+
+        <!-- Org1 -->
+        <mxCell id="org1" value="Org1MSP&#xa;- peer0.org1.example.com&#xa;- Admin@org1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6" vertex="1" parent="1">
+          <mxGeometry x="480" y="100" width="180" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Orderer -->
+        <mxCell id="orderer" value="Orderer&#xa;orderer.example.com" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666" vertex="1" parent="1">
+          <mxGeometry x="680" y="100" width="180" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Canal -->
+        <mxCell id="channel" value="Canal: mychannel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656" vertex="1" parent="1">
+          <mxGeometry x="480" y="220" width="380" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Chaincode -->
+        <mxCell id="chaincode" value="Chaincode: jsonstore&#xa;• StoreData(json)&#xa;• GetDataByTxID(txid)" style="shape=note;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF" vertex="1" parent="1">
+          <mxGeometry x="480" y="270" width="380" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Ledger -->
+        <mxCell id="ledger" value="Ledger de peer&#xa;• World State (clave = TxID)&#xa;• Histórico de bloques" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D79B00" vertex="1" parent="1">
+          <mxGeometry x="480" y="360" width="380" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Cliente -> API -->
+        <mxCell style="endArrow=block" edge="1" parent="1" source="client" target="api">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- API -> Fabric -->
+        <mxCell style="endArrow=block" edge="1" parent="1" source="api" target="org1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- API -> Persistencia -->
+        <mxCell style="endArrow=block" edge="1" parent="1" source="api" target="store">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Peer -> Orderer -->
+        <mxCell value="Envío de tx" style="endArrow=block;dashed=1;strokeColor=#888888" edge="1" parent="1" source="org1" target="orderer">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Orderer -> Canal -->
+        <mxCell value="Ordenación y difusión" style="endArrow=block;dashed=1;strokeColor=#888888" edge="1" parent="1" source="orderer" target="channel">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Canal -> Peer -->
+        <mxCell value="Commit a ledger" style="endArrow=block;dashed=1;strokeColor=#888888" edge="1" parent="1" source="channel" target="ledger">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Ver JSON en Blockchain</title>
+  <link rel="stylesheet" href="css/ver-json.css" />
+</head>
+
+<body>
+  <div class="header">
+    <h1 id="title">📦 JSON desde la Blockchain</h1>
+    <button id="btn-modo" class="btn">🌙 / ☀️</button>
+  </div>
+
+  <div class="container">
+    <div class="info">
+      txid: <span id="txid"></span><br />
+      tipo: <span id="tipo"></span>
+    </div>
+
+    <div id="contenido">Cargando datos...</div>
+
+    <!-- Recuadro de JSON -->
+    <div id="jsonBox" class="json-box" style="display: none;">
+      <pre id="jsonPre"></pre>
+      <div style="text-align: right;">
+        <button id="descargarBtn" class="btn">⬇️ Descargar JSON</button>
+      </div>
+    </div>
+
+    <!-- Tabla de hashes -->
+    <table id="hashTable" class="card" style="display: none; margin-top: 15px;">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Valor</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody id="hashTbody"></tbody>
+    </table>
+    <div id="validacion"></div>
+    <div id="tiempos"></div>
+
+    <h3>📊 Métricas asociadas</h3>
+    <table id="metricsTable" class="card" style="width:100%; display:none; margin-top:10px;">
+      <thead style="background: var(--table-head);">
+        <tr>
+          <th style="text-align:left;">Métrica</th>
+          <th style="text-align:left;">Valor</th>
+          <th style="text-align:left;">Unidad</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button id="descargarBtn" class="btn" style="display:none;">⬇️ Descargar JSON</button>
+  </div>
+
+  <script src="js/ver-json.js"></script>
+</body>
+
+</html>
