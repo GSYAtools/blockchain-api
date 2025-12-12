@@ -7,6 +7,7 @@ async function main() {
     const credPath = path.join(
       __dirname,
       '..',
+      'ALBA-Blockchain',
       'fabric-samples',
       'test-network',
       'organizations',

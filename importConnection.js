@@ -5,7 +5,7 @@ async function main() {
   try {
     const origen = path.resolve(
       __dirname,
-      '../fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.json'
+      '../ALBA-Blockchain/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.json'
     );
 
     const destino = path.resolve(__dirname, 'connection-org1.json');
