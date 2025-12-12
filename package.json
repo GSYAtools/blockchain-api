@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "import": "node importConnection.js && node"
+    "import": "node importConnection.js && node importIdentity.js"
   },
   "keywords": [],
   "author": "",
