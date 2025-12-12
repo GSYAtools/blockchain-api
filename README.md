@@ -1,10 +1,12 @@
-### ¿Qué hace el proyecto?
+# Blockchain API
+
+## Introducción del proyecto
 
 Este proyecto es una API REST desarrollada en Node.js con Express, diseñada para interactuar con una red de Hyperledger Fabric (HLF). Su propósito principal es almacenar y recuperar datos JSON en la blockchain de HLF, utilizando contratos inteligentes (chaincodes) para operaciones de escritura y lectura. Además, integra una base de datos MySQL para persistir metadatos de las transacciones (como IDs de transacción, timestamps y tiempos de ejecución), y consulta métricas desde Prometheus para monitoreo. Incluye una interfaz web simple para visualizar los registros almacenados.
 
 El proyecto se enfoca en dos modelos de datos: "light" (datos ligeros) y "heavy" (datos pesados), distribuidos en canales separados de HLF (`lightchannel` y `heavychannel`). Esto permite una separación lógica de cargas de trabajo en la red blockchain.
 
-### ¿Cómo funciona?
+## ¿Cómo funciona?
 
 #### Arquitectura general
 - **Cliente**: Un usuario externo (como una aplicación web o API client) envía solicitudes HTTP a la API.
@@ -16,7 +18,7 @@ El proyecto se enfoca en dos modelos de datos: "light" (datos ligeros) y "heavy"
 
 El flujo típico es: Cliente → API → HLF (para blockchain) + MySQL (para metadatos) → Respuesta al cliente.
 
-#### Componentes clave y flujo de funcionamiento
+### Componentes clave y flujo de funcionamiento
 1. **Configuración inicial**:
    - **Archivos de configuración**: .env define variables como puerto (8090), credenciales de MySQL, rutas a wallet y perfil de conexión (connection-org1.json), canales y chaincode (`jsonstoragemodel`).
    - **Importación de identidades**: importIdentity.js importa la identidad de admin (`Admin@org1.example.com`) desde el directorio de test-network de Fabric Samples a la wallet local (wallet). importConnection.js copia el perfil de conexión.
@@ -62,7 +64,7 @@ El flujo típico es: Cliente → API → HLF (para blockchain) + MySQL (para met
 7. **Monitoreo y métricas**:
    - Ruta `/metrics` consulta Prometheus en `http://localhost:9090` para métricas relacionadas con transacciones.
 
-#### Inicio y ejecución
+### Inicio y ejecución
 - **Scripts en package.json**: `npm start` ejecuta `node app.js`. `npm run import` importa identidad y conexión.
 - **Requisitos**: Red HLF corriendo (e.g., test-network), MySQL configurado, Prometheus para métricas.
 - **Flujo de ejemplo**:
