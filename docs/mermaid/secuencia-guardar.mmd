@@ -1,0 +1,51 @@
+%%{init: {'theme':'default'}}%%
+sequenceDiagram
+    actor Cliente
+    participant API as API REST
+    participant Fabric as Hyperledger Fabric
+    participant MySQL as MySQL DB
+    
+    Note over Cliente,MySQL: Operación: Guardar Datos
+    
+    Cliente->>+API: POST /guardar-json<br/>{data, descripcion}
+    
+    API->>API: Validar datos
+    
+    API->>+MySQL: Conectar
+    MySQL-->>-API: Conexión OK
+    
+    API->>API: Cargar wallet<br/>Admin@org1.example.com
+    
+    API->>+Fabric: Connect Gateway
+    Fabric-->>-API: Gateway OK
+    
+    API->>API: Generar hash SHA-256
+    
+    rect rgb(255, 248, 220)
+        Note over API,Fabric: Transacción LIGHT
+        API->>+Fabric: Submit to lightchannel<br/>StoreData('light', hash)
+        Fabric->>Fabric: Validar transacción
+        Fabric->>Fabric: Endorsement
+        Fabric->>Fabric: Commit a ledger
+        Fabric-->>-API: txidLight
+    end
+    
+    rect rgb(255, 228, 225)
+        Note over API,Fabric: Transacción HEAVY
+        API->>+Fabric: Submit to heavychannel<br/>StoreData('heavy', JSON)
+        Fabric->>Fabric: Validar transacción
+        Fabric->>Fabric: Endorsement
+        Fabric->>Fabric: Commit a ledger
+        Fabric-->>-API: txidHeavy
+    end
+    
+    API->>+MySQL: INSERT light_model_data<br/>(JSON, timestamp, txid)
+    MySQL-->>-API: Insert OK
+    
+    API->>+MySQL: INSERT heavy_model_data<br/>(timestamp, txid)
+    MySQL-->>-API: Insert OK
+    
+    API->>Fabric: Disconnect
+    API->>MySQL: Close connection
+    
+    API-->>-Cliente: 200 OK<br/>{txidLight, txidHeavy}

@@ -57,17 +57,19 @@ Ambos modelos utilizan canales separados en HLF (`lightchannel` y `heavychannel`
 
 La documentación técnica completa con **diagramas Mermaid interactivos** está disponible en la carpeta [`docs/`](./docs/):
 
-| Diagrama | Descripción | Ver |
-|----------|-------------|-----|
-| 🏗️ **Arquitectura del Sistema** | Vista completa de componentes y sus interacciones | [Ver diagrama](./docs/arquitectura-sistema.md) |
-| 🔄 **Flujo de Guardar Datos** | Proceso detallado POST /guardar-json | [Ver diagrama](./docs/flujo-guardar-datos.md) |
-| 📖 **Flujo de Leer Datos** | Proceso detallado GET /leer-json/:tipo/:txid | [Ver diagrama](./docs/flujo-leer-datos.md) |
-| 🪶🏋️ **Modelo de Datos** | Comparación Light vs Heavy con casos de uso | [Ver diagrama](./docs/modelo-datos.md) |
-| 🔀 **Secuencia Completa** | Diagramas de secuencia e interacciones | [Ver diagrama](./docs/secuencia-completa.md) |
+| Diagrama | Vista Previa | Descripción |
+|----------|--------------|-------------|
+| 🏗️ **[Arquitectura del Sistema](./docs/arquitectura-sistema.md)** | ![Arquitectura](./docs/images/arquitectura-sistema.svg) | Vista completa de componentes y sus interacciones |
+| 🔄 **[Flujo de Guardar Datos](./docs/flujo-guardar-datos.md)** | ![Guardar](./docs/images/flujo-guardar-datos.svg) | Proceso detallado POST /guardar-json |
+| 📖 **[Flujo de Leer Datos](./docs/flujo-leer-datos.md)** | ![Leer](./docs/images/flujo-leer-datos.svg) | Proceso detallado GET /leer-json/:tipo/:txid |
+| 🪶🏋️ **[Modelo de Datos](./docs/modelo-datos.md)** | ![Modelo](./docs/images/modelo-datos-comparacion.svg) | Comparación Light vs Heavy con casos de uso |
+| 🔀 **[Secuencia Completa](./docs/secuencia-completa.md)** | ![Secuencia](./docs/images/secuencia-guardar.svg) | Diagramas de secuencia e interacciones |
 
-> 💡 **Tip**: Los diagramas son interactivos y se visualizan directamente en GitHub. También puedes verlos en VS Code con la extensión Mermaid Preview.
+> 💡 **Tip**: Haz clic en cualquier diagrama para ver la documentación completa interactiva.
 
 ## 🏗️ Arquitectura del Sistema
+
+[![Arquitectura del Sistema](./docs/images/arquitectura-sistema.svg)](./docs/arquitectura-sistema.md)
 
 > 📊 **[Ver diagrama interactivo completo](./docs/arquitectura-sistema.md)**
 
@@ -239,6 +241,8 @@ curl http://localhost:3460/registros
 ```
 
 ## 📊 Modelo de Datos
+
+[![Comparación de Modelos](./docs/images/modelo-datos-comparacion.svg)](./docs/modelo-datos.md)
 
 > 📊 **[Ver comparación visual completa](./docs/modelo-datos.md)**
 
@@ -535,6 +539,8 @@ Accede desde tu navegador: `http://localhost:3460`
 
 ### Flujo 1: Guardar Datos (POST /guardar-json)
 
+[![Flujo Guardar Datos](./docs/images/flujo-guardar-datos.svg)](./docs/flujo-guardar-datos.md)
+
 **Resumen del proceso**:
 
 1. **Validación**: Verifica campos requeridos (data, descripcion)
@@ -552,6 +558,8 @@ Accede desde tu navegador: `http://localhost:3460`
 ---
 
 ### Flujo 2: Leer Datos (GET /leer-json/:tipo/:txid)
+
+[![Flujo Leer Datos](./docs/images/flujo-leer-datos.svg)](./docs/flujo-leer-datos.md)
 
 **Resumen del proceso**:
 

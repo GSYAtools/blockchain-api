@@ -1,0 +1,45 @@
+%%{init: {'theme':'default'}}%%
+graph TD
+    subgraph Root["📁 blockchain-api/"]
+        App["📄 app.js<br/>Servidor principal"]
+        Pkg["📄 package.json"]
+        Env["🔒 .env"]
+        Conn["📄 connection-org1.json"]
+        
+        subgraph Controllers["📂 controllers/<br/>Lógica de negocio"]
+            CtrlGuard["📄 guardarController.js"]
+            CtrlLeer["📄 leerController.js"]
+        end
+        
+        subgraph Routes["📂 routes/<br/>Endpoints HTTP"]
+            RouteGuard["📄 guardar.js"]
+            RouteLeer["📄 leer.js"]
+            RouteMetrics["📄 metrics.js"]
+            RouteData["📄 data.js"]
+        end
+        
+        subgraph Public["📂 public/<br/>Frontend"]
+            Index["📄 index.html"]
+            VerJSON["📄 ver-json.html"]
+            CSS["📂 css/"]
+            JS["📂 js/"]
+        end
+        
+        subgraph Wallet["📂 wallet/<br/>Identidades"]
+            AdminID["📄 Admin@org1.example.com.id"]
+        end
+        
+        Scripts["📜 Scripts de utilidad<br/>importConnection.js<br/>importIdentity.js"]
+    end
+    
+    App --> Controllers
+    App --> Routes
+    App --> Public
+    Routes --> Controllers
+    
+    style Root fill:#f9f9f9
+    style Controllers fill:#fff4e1
+    style Routes fill:#f0e1ff
+    style Public fill:#e1ffe1
+    style Wallet fill:#ffe1e1
+    style App fill:#90EE90

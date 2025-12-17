@@ -1,0 +1,30 @@
+%%{init: {'theme':'default'}}%%
+sequenceDiagram
+    actor Cliente
+    participant API as API REST
+    participant Fabric as Hyperledger Fabric
+    participant MySQL as MySQL DB
+    
+    Note over Cliente,MySQL: Operación: Leer Datos
+    
+    Cliente->>+API: GET /leer-json/light/txid
+    
+    API->>API: Validar parámetros
+    
+    API->>+Fabric: Connect Gateway
+    Fabric-->>-API: Gateway OK
+    
+    API->>+Fabric: Evaluate lightchannel<br/>GetDataByTxID('light', txid)
+    Fabric->>Fabric: Query ledger
+    Fabric-->>-API: {tipo, payload: hash}
+    
+    API->>+MySQL: SELECT data<br/>FROM light_model_data<br/>WHERE tx_id = ?
+    MySQL-->>-API: JSON completo
+    
+    API->>+Fabric: QSCC GetBlockByTxID
+    Fabric->>Fabric: Obtener bloque
+    Fabric-->>-API: Block details<br/>(creator, signature, header)
+    
+    API->>Fabric: Disconnect
+    
+    API-->>-Cliente: 200 OK<br/>{payload, localData,<br/>creator, signature}

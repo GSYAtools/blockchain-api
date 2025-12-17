@@ -1,0 +1,23 @@
+%%{init: {'theme':'default'}}%%
+sequenceDiagram
+    actor Cliente
+    participant API as API REST
+    participant MySQL as MySQL DB
+    participant Prom as Prometheus
+    
+    Note over Cliente,Prom: Operación: Consultar Métricas
+    
+    Cliente->>+API: GET /metrics/tx/txid
+    
+    API->>+MySQL: SELECT timestamp, start_tx_ns, end_tx_ns<br/>WHERE tx_id = ?
+    MySQL-->>-API: Metadata
+    
+    API->>API: Calcular timerange
+    
+    loop Para cada métrica
+        API->>+Prom: Query PromQL<br/>(blockLatency, CPU, Memory...)
+        Prom->>Prom: Ejecutar query
+        Prom-->>-API: Resultado métrica
+    end
+    
+    API-->>-Cliente: 200 OK<br/>{txid, metrics: {...}}
