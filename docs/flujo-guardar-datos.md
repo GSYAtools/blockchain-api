@@ -1,0 +1,82 @@
+# Flujo de Guardar Datos - POST /guardar-json
+
+Este diagrama muestra el flujo completo de operaciones cuando se guardan datos en la blockchain.
+
+```mermaid
+flowchart TD
+    Start([Cliente envía POST /guardar-json]) --> Validate{Validar Datos}
+    
+    Validate -->|Error| Error400[❌ Error 400<br/>Faltan campos requeridos]
+    Validate -->|OK| ConnectDB[Conectar a MySQL]
+    
+    ConnectDB --> LoadIdentity[Cargar Identidad Fabric<br/>- Leer connection-org1.json<br/>- Cargar wallet<br/>- Verificar Admin]
+    
+    LoadIdentity --> PrepareData[Preparar Datos<br/>- JSON string<br/>- Hash SHA-256]
+    
+    PrepareData --> Parallel{Procesamiento Paralelo}
+    
+    Parallel --> TxLight[⚡ Transacción LIGHT]
+    Parallel --> TxHeavy[🏋️ Transacción HEAVY]
+    Parallel --> MeasureTime[⏱️ Medir Tiempos<br/>nanosegundos]
+    
+    TxLight --> LightGW[Gateway lightchannel]
+    LightGW --> LightSubmit[Submit StoreData<br/>tipo: light<br/>payload: hash]
+    LightSubmit --> LightTxID[Obtener txidLight]
+    
+    TxHeavy --> HeavyGW[Gateway heavychannel]
+    HeavyGW --> HeavySubmit[Submit StoreData<br/>tipo: heavy<br/>payload: JSON]
+    HeavySubmit --> HeavyTxID[Obtener txidHeavy]
+    
+    LightTxID --> Persist[Persistir en MySQL]
+    HeavyTxID --> Persist
+    MeasureTime --> Persist
+    
+    Persist --> InsertLight[INSERT light_model_data<br/>- data JSON completo<br/>- timestamp<br/>- start_tx_ns, end_tx_ns<br/>- tx_id]
+    
+    Persist --> InsertHeavy[INSERT heavy_model_data<br/>- timestamp<br/>- start_tx_ns, end_tx_ns<br/>- tx_id]
+    
+    InsertLight --> Disconnect[Desconectar<br/>- gateway.disconnect<br/>- db.end]
+    InsertHeavy --> Disconnect
+    
+    Disconnect --> Response[✅ Respuesta 200 OK<br/>txidLight, txidHeavy]
+    
+    LoadIdentity -->|Error| Error500[❌ Error 500<br/>Identidad no encontrada]
+    TxLight -->|Error| ErrorTx[❌ Error 500<br/>Fallo en transacción]
+    TxHeavy -->|Error| ErrorTx
+    Persist -->|Error| ErrorDB[❌ Error 500<br/>Fallo en DB]
+    
+    Error400 --> End([Fin])
+    Error500 --> End
+    ErrorTx --> End
+    ErrorDB --> End
+    Response --> End
+    
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Response fill:#87CEEB
+    style Error400 fill:#FF6B6B
+    style Error500 fill:#FF6B6B
+    style ErrorTx fill:#FF6B6B
+    style ErrorDB fill:#FF6B6B
+    style TxLight fill:#FFD700
+    style TxHeavy fill:#FFA500
+    style MeasureTime fill:#DDA0DD
+```
+
+## Puntos Clave
+
+- **Tiempo estimado**: 200-500ms (dependiendo de la red y tamaño de datos)
+- Las transacciones light y heavy se ejecutan en **serie** (no paralelo)
+- Los tiempos se miden en **nanosegundos** usando `process.hrtime.bigint()`
+- Cada transacción genera un **Transaction ID único**
+- Si falla una transacción, todo el proceso se revierte (atomic)
+
+## Datos Almacenados
+
+### Light Model
+- **Blockchain**: Hash SHA-256 (32 bytes)
+- **MySQL**: JSON completo + metadatos
+
+### Heavy Model
+- **Blockchain**: JSON completo
+- **MySQL**: Solo metadatos

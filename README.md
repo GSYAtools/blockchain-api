@@ -8,6 +8,7 @@
 ## 📑 Tabla de Contenidos
 
 - [Introducción](#introducción)
+- [Diagramas Interactivos](#-diagramas-interactivos)
 - [Arquitectura del Sistema](#arquitectura-del-sistema)
 - [Requisitos Previos](#requisitos-previos)
 - [Instalación y Configuración](#instalación-y-configuración)
@@ -52,50 +53,31 @@ El proyecto implementa dos estrategias de almacenamiento optimizadas para difere
 
 Ambos modelos utilizan canales separados en HLF (`lightchannel` y `heavychannel`) para optimizar el rendimiento y permitir una gestión independiente de políticas de endorsement.
 
+## 📊 Diagramas Interactivos
+
+La documentación técnica completa con **diagramas Mermaid interactivos** está disponible en la carpeta [`docs/`](./docs/):
+
+| Diagrama | Descripción | Ver |
+|----------|-------------|-----|
+| 🏗️ **Arquitectura del Sistema** | Vista completa de componentes y sus interacciones | [Ver diagrama](./docs/arquitectura-sistema.md) |
+| 🔄 **Flujo de Guardar Datos** | Proceso detallado POST /guardar-json | [Ver diagrama](./docs/flujo-guardar-datos.md) |
+| 📖 **Flujo de Leer Datos** | Proceso detallado GET /leer-json/:tipo/:txid | [Ver diagrama](./docs/flujo-leer-datos.md) |
+| 🪶🏋️ **Modelo de Datos** | Comparación Light vs Heavy con casos de uso | [Ver diagrama](./docs/modelo-datos.md) |
+| 🔀 **Secuencia Completa** | Diagramas de secuencia e interacciones | [Ver diagrama](./docs/secuencia-completa.md) |
+
+> 💡 **Tip**: Los diagramas son interactivos y se visualizan directamente en GitHub. También puedes verlos en VS Code con la extensión Mermaid Preview.
+
 ## 🏗️ Arquitectura del Sistema
 
-### Diagrama de Componentes
+> 📊 **[Ver diagrama interactivo completo](./docs/arquitectura-sistema.md)**
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                          CLIENTE                                 │
-│              (Navegador Web / API Client / App)                  │
-└────────────────────────────┬────────────────────────────────────┘
-                             │ HTTP/HTTPS
-                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    API REST (Node.js + Express)                  │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │   Guardar    │  │     Leer     │  │   Métricas   │          │
-│  │  Controller  │  │  Controller  │  │    Routes    │          │
-│  └──────────────┘  └──────────────┘  └──────────────┘          │
-└───────┬──────────────────────┬──────────────────┬───────────────┘
-        │                      │                  │
-        │                      │                  │
-        ▼                      ▼                  ▼
-┌───────────────┐    ┌─────────────────┐    ┌──────────────┐
-│ Hyperledger   │    │     MySQL       │    │  Prometheus  │
-│    Fabric     │    │   Database      │    │   Metrics    │
-│               │    │                 │    │    Server    │
-│ ┌───────────┐ │    │ ┌─────────────┐│    └──────────────┘
-│ │lightchannel│◄┼────┼►│light_model_ ││
-│ │           │ │    │ │    data     ││
-│ │jsonstorage││ │    │ └─────────────┘│
-│ │  model    │ │    │                 │
-│ └───────────┘ │    │ ┌─────────────┐│
-│               │    │ │heavy_model_ ││
-│ ┌───────────┐ │    │ │    data     ││
-│ │heavychannel│◄┼────┼►└─────────────┘│
-│ │           │ │    │                 │
-│ │jsonstorage││ │    └─────────────────┘
-│ │  model    │ │
-│ └───────────┘ │
-│               │
-│  Wallet: Admin│
-│ @org1.example │
-│      .com     │
-└───────────────┘
-```
+### Resumen de Arquitectura
+
+La aplicación sigue una arquitectura de 3 capas con integración blockchain:
+
+**1. Capa de Presentación**: Cliente (Web/API)  
+**2. Capa de Lógica de Negocio**: API REST (Node.js + Express)  
+**3. Capa de Datos**: Hyperledger Fabric + MySQL + Prometheus
 
 ### Flujo de Datos General
 
@@ -257,6 +239,8 @@ curl http://localhost:3460/registros
 ```
 
 ## 📊 Modelo de Datos
+
+> 📊 **[Ver comparación visual completa](./docs/modelo-datos.md)**
 
 ### Comparativa de Modelos
 
@@ -544,189 +528,44 @@ Accede desde tu navegador: `http://localhost:3460`
 
 ## 🔄 Flujos de Operación Detallados
 
+> 📊 **Diagramas interactivos disponibles**:
+> - **[Flujo de Guardar Datos](./docs/flujo-guardar-datos.md)** - POST /guardar-json
+> - **[Flujo de Leer Datos](./docs/flujo-leer-datos.md)** - GET /leer-json/:tipo/:txid
+> - **[Diagramas de Secuencia](./docs/secuencia-completa.md)** - Interacciones completas
+
 ### Flujo 1: Guardar Datos (POST /guardar-json)
 
-```
-┌─────────┐
-│ Cliente │
-└────┬────┘
-     │ POST /guardar-json
-     │ { data: {...}, descripcion: "..." }
-     ▼
-┌─────────────────────────────────────────┐
-│ 1. Validación de Datos                  │
-│    - Verificar campos requeridos        │
-│    - Validar estructura JSON            │
-└────┬────────────────────────────────────┘
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│ 2. Conexión a MySQL                     │
-│    - Crear pool de conexiones           │
-└────┬────────────────────────────────────┘
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│ 3. Cargar Identidad de Fabric           │
-│    - Leer connection-org1.json          │
-│    - Cargar wallet                      │
-│    - Verificar identidad Admin          │
-└────┬────────────────────────────────────┘
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│ 4. Preparar Datos                       │
-│    - Convertir data a JSON string       │
-│    - Generar hash SHA-256 para light    │
-└────┬────────────────────────────────────┘
-     │
-     ├─────────────────────┬───────────────────────┐
-     ▼                     ▼                       ▼
-┌──────────────┐   ┌──────────────┐   ┌───────────────────┐
-│ 5a. TX LIGHT │   │ 5b. TX HEAVY │   │ 6. Medir Tiempos  │
-│              │   │              │   │                   │
-│ - Gateway a  │   │ - Gateway a  │   │ - start_tx_ns     │
-│ lightchannel │   │ heavychannel │   │ - end_tx_ns       │
-│              │   │              │   │ (nanosegundos)    │
-│ - Submit     │   │ - Submit     │   │                   │
-│ StoreData    │   │ StoreData    │   └───────────────────┘
-│ ('light',    │   │ ('heavy',    │
-│  hash)       │   │  jsonString) │
-│              │   │              │
-│ - Obtener    │   │ - Obtener    │
-│ txidLight    │   │ txidHeavy    │
-└──────┬───────┘   └──────┬───────┘
-       │                  │
-       └────────┬─────────┘
-                ▼
-┌─────────────────────────────────────────┐
-│ 7. Persistencia en MySQL                │
-│                                         │
-│ INSERT light_model_data:                │
-│   - data (JSON completo)                │
-│   - timestamp                           │
-│   - start_tx_ns, end_tx_ns              │
-│   - tx_id (txidLight)                   │
-│                                         │
-│ INSERT heavy_model_data:                │
-│   - timestamp                           │
-│   - start_tx_ns, end_tx_ns              │
-│   - tx_id (txidHeavy)                   │
-└────┬────────────────────────────────────┘
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│ 8. Desconexión                          │
-│    - gateway.disconnect()               │
-│    - db.end()                           │
-└────┬────────────────────────────────────┘
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│ 9. Respuesta al Cliente                 │
-│    {                                    │
-│      message: "Guardado...",            │
-│      txidLight: "...",                  │
-│      txidHeavy: "..."                   │
-│    }                                    │
-└─────────────────────────────────────────┘
-```
+**Resumen del proceso**:
 
-**Tiempo estimado**: 200-500ms (dependiendo de la red y tamaño de datos)
+1. **Validación**: Verifica campos requeridos (data, descripcion)
+2. **Conexión**: Establece conexión con MySQL y Fabric
+3. **Preparación**: Genera hash SHA-256 del JSON
+4. **Transacción Light**: Submit a lightchannel con hash
+5. **Transacción Heavy**: Submit a heavychannel con JSON completo
+6. **Persistencia**: Guarda en ambas tablas de MySQL
+7. **Respuesta**: Retorna txidLight y txidHeavy
 
-**Puntos clave**:
-- Las transacciones light y heavy se ejecutan en **serie** (no paralelo)
-- Los tiempos se miden en **nanosegundos** usando `process.hrtime.bigint()`
-- Cada transacción genera un **Transaction ID único**
-- Si falla una transacción, todo el proceso se revierte (atomic)
+**Tiempo estimado**: 200-500ms
+
+**Ver diagrama de flujo completo**: [flujo-guardar-datos.md](./docs/flujo-guardar-datos.md)
 
 ---
 
 ### Flujo 2: Leer Datos (GET /leer-json/:tipo/:txid)
 
-```
-┌─────────┐
-│ Cliente │
-└────┬────┘
-     │ GET /leer-json/light/a1b2c3d4...
-     ▼
-┌─────────────────────────────────────────┐
-│ 1. Validación de Parámetros             │
-│    - Verificar tipo (light/heavy)       │
-│    - Verificar txid                     │
-└────┬────────────────────────────────────┘
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│ 2. Conexión a Fabric                    │
-│    - Cargar perfil de conexión          │
-│    - Autenticar con wallet              │
-│    - Conectar gateway                   │
-└────┬────────────────────────────────────┘
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│ 3. Seleccionar Canal                    │
-│    - light → lightchannel               │
-│    - heavy → heavychannel               │
-└────┬────────────────────────────────────┘
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│ 4. Consultar Chaincode                  │
-│    - evaluateTransaction()              │
-│    - GetDataByTxID(tipo, txid)          │
-│    - Obtener payload del ledger         │
-└────┬────────────────────────────────────┘
-     │
-     ├─────────────────────────────────────┐
-     ▼                                     │
-┌──────────────────────┐                  │
-│ 5. Si tipo = "light" │                  │
-│                      │                  │
-│ - Consultar MySQL    │                  │
-│ - SELECT data        │                  │
-│   FROM light_model   │                  │
-│   WHERE tx_id = ?    │                  │
-│                      │                  │
-│ - Obtener JSON       │                  │
-│   completo           │                  │
-└──────┬───────────────┘                  │
-       │                                  │
-       └──────────────┬───────────────────┘
-                      ▼
-┌─────────────────────────────────────────┐
-│ 6. Obtener Detalles del Bloque          │
-│    - Usar QSCC (Query System Chaincode) │
-│    - GetBlockByTxID(channel, txid)      │
-│    - Decodificar bloque                 │
-│    - Extraer:                           │
-│      * Creator (MSP ID + certificado)   │
-│      * Signature                        │
-│      * Transaction Header               │
-└────┬────────────────────────────────────┘
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│ 7. Construir Respuesta                  │
-│    - payload (hash o JSON)              │
-│    - tipo                               │
-│    - channel                            │
-│    - localData (si light)               │
-│    - creator info                       │
-│    - signature                          │
-│    - tx_header                          │
-└────┬────────────────────────────────────┘
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│ 8. Desconectar y Responder              │
-│    - gateway.disconnect()               │
-│    - res.json(resultado)                │
-└─────────────────────────────────────────┘
-```
+**Resumen del proceso**:
+
+1. **Validación**: Verifica tipo (light/heavy) y txid
+2. **Conexión**: Conecta a Fabric con la identidad
+3. **Selección**: Elige canal según tipo (lightchannel/heavychannel)
+4. **Query**: Ejecuta GetDataByTxID en chaincode
+5. **MySQL** (solo light): Recupera JSON completo de base de datos
+6. **Bloque**: Obtiene metadatos del bloque (creator, signature)
+7. **Respuesta**: Retorna payload + metadatos
 
 **Tiempo estimado**: 100-300ms
+
+**Ver diagrama de flujo completo**: [flujo-leer-datos.md](./docs/flujo-leer-datos.md)
 
 **Puntos clave**:
 - Es una operación de **lectura** (evaluate), no modifica el ledger
