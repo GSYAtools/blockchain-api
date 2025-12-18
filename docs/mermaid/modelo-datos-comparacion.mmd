@@ -1,16 +1,16 @@
 %%{init: {'theme':'default'}}%%
 graph LR
-    subgraph Input["📥 Entrada de Datos"]
+    subgraph Input["Entrada de Datos"]
         JSON["JSON Data<br/>{usuario: 'john', edad: 30}"]
     end
     
-    subgraph LightModel["🪶 LIGHT MODEL"]
+    subgraph LightModel["LIGHT MODEL"]
         LightHash["Hash SHA-256<br/>a3f5b9..."]
         LightBC["Blockchain<br/>32 bytes fijos"]
         LightDB["MySQL<br/>JSON completo<br/>+ metadatos"]
     end
     
-    subgraph HeavyModel["🏋️ HEAVY MODEL"]
+    subgraph HeavyModel["HEAVY MODEL"]
         HeavyJSON["JSON Completo<br/>{usuario: 'john'...}"]
         HeavyBC["Blockchain<br/>Tamaño variable"]
         HeavyDB["MySQL<br/>Solo metadatos"]
@@ -32,3 +32,4 @@ graph LR
     style HeavyBC fill:#FFA07A
     style LightDB fill:#87CEEB
     style HeavyDB fill:#DDA0DD
+

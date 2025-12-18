@@ -1,33 +1,33 @@
 %%{init: {'theme':'default'}}%%
 graph TB
-    subgraph Cliente["🌐 CLIENTE"]
+    subgraph Cliente["CLIENTE"]
         Browser["Navegador Web"]
         APIClient["API Client"]
         App["Aplicación"]
     end
     
-    subgraph API["⚙️ API REST (Node.js + Express)"]
+    subgraph API["API REST (Node.js + Express)"]
         GuardarCtrl["Guardar Controller"]
         LeerCtrl["Leer Controller"]
         MetricsRoute["Métricas Routes"]
     end
     
-    subgraph Fabric["⛓️ Hyperledger Fabric"]
+    subgraph Fabric["Hyperledger Fabric"]
         subgraph LightCh["Light Channel"]
             LightCC["jsonstoragemodel<br/>chaincode"]
         end
         subgraph HeavyCh["Heavy Channel"]
             HeavyCC["jsonstoragemodel<br/>chaincode"]
         end
-        Wallet["🔐 Wallet<br/>Admin@org1.example.com"]
+        Wallet["Wallet<br/>Admin@org1.example.com"]
     end
     
-    subgraph DB["🗄️ MySQL Database"]
+    subgraph DB["MySQL Database"]
         LightTable["light_model_data<br/>(JSON + metadata)"]
         HeavyTable["heavy_model_data<br/>(solo metadata)"]
     end
     
-    subgraph Monitoring["📊 Monitoring"]
+    subgraph Monitoring["Monitoring"]
         Prometheus["Prometheus<br/>Metrics Server"]
     end
     
@@ -59,3 +59,4 @@ graph TB
     style Monitoring fill:#ffe1e1
     style LightCC fill:#a8d5ff
     style HeavyCC fill:#ffa8d5
+

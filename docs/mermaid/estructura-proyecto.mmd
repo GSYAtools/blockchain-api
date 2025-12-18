@@ -1,35 +1,35 @@
 %%{init: {'theme':'default'}}%%
 graph TD
-    subgraph Root["📁 blockchain-api/"]
-        App["📄 app.js<br/>Servidor principal"]
-        Pkg["📄 package.json"]
-        Env["🔒 .env"]
-        Conn["📄 connection-org1.json"]
+    subgraph Root["blockchain-api/"]
+        App["app.js<br/>Servidor principal"]
+        Pkg["package.json"]
+        Env[".env"]
+        Conn["connection-org1.json"]
         
-        subgraph Controllers["📂 controllers/<br/>Lógica de negocio"]
-            CtrlGuard["📄 guardarController.js"]
-            CtrlLeer["📄 leerController.js"]
+        subgraph Controllers["controllers/<br/>Lógica de negocio"]
+            CtrlGuard["guardarController.js"]
+            CtrlLeer["leerController.js"]
         end
         
-        subgraph Routes["📂 routes/<br/>Endpoints HTTP"]
-            RouteGuard["📄 guardar.js"]
-            RouteLeer["📄 leer.js"]
-            RouteMetrics["📄 metrics.js"]
-            RouteData["📄 data.js"]
+        subgraph Routes["routes/<br/>Endpoints HTTP"]
+            RouteGuard["guardar.js"]
+            RouteLeer["leer.js"]
+            RouteMetrics["metrics.js"]
+            RouteData["data.js"]
         end
         
-        subgraph Public["📂 public/<br/>Frontend"]
-            Index["📄 index.html"]
-            VerJSON["📄 ver-json.html"]
-            CSS["📂 css/"]
-            JS["📂 js/"]
+        subgraph Public["public/<br/>Frontend"]
+            Index["index.html"]
+            VerJSON["ver-json.html"]
+            CSS["css/"]
+            JS["js/"]
         end
         
-        subgraph Wallet["📂 wallet/<br/>Identidades"]
-            AdminID["📄 Admin@org1.example.com.id"]
+        subgraph Wallet["wallet/<br/>Identidades"]
+            AdminID["Admin@org1.example.com.id"]
         end
         
-        Scripts["📜 Scripts de utilidad<br/>importConnection.js<br/>importIdentity.js"]
+        Scripts["Scripts de utilidad<br/>importConnection.js<br/>importIdentity.js"]
     end
     
     App --> Controllers
@@ -43,3 +43,4 @@ graph TD
     style Public fill:#e1ffe1
     style Wallet fill:#ffe1e1
     style App fill:#90EE90
+

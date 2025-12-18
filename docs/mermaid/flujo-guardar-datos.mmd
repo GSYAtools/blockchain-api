@@ -2,7 +2,7 @@
 flowchart TD
     Start([Cliente envía POST /guardar-json]) --> Validate{Validar Datos}
     
-    Validate -->|Error| Error400[❌ Error 400<br/>Faltan campos requeridos]
+    Validate -->|Error| Error400[Error 400<br/>Faltan campos requeridos]
     Validate -->|OK| ConnectDB[Conectar a MySQL]
     
     ConnectDB --> LoadIdentity[Cargar Identidad Fabric<br/>- Leer connection-org1.json<br/>- Cargar wallet<br/>- Verificar Admin]
@@ -11,9 +11,9 @@ flowchart TD
     
     PrepareData --> Parallel{Procesamiento Paralelo}
     
-    Parallel --> TxLight[⚡ Transacción LIGHT]
-    Parallel --> TxHeavy[🏋️ Transacción HEAVY]
-    Parallel --> MeasureTime[⏱️ Medir Tiempos<br/>nanosegundos]
+    Parallel --> TxLight[Transacción LIGHT]
+    Parallel --> TxHeavy[Transacción HEAVY]
+    Parallel --> MeasureTime[Medir Tiempos<br/>nanosegundos]
     
     TxLight --> LightGW[Gateway lightchannel]
     LightGW --> LightSubmit[Submit StoreData<br/>tipo: light<br/>payload: hash]
@@ -34,12 +34,12 @@ flowchart TD
     InsertLight --> Disconnect[Desconectar<br/>- gateway.disconnect<br/>- db.end]
     InsertHeavy --> Disconnect
     
-    Disconnect --> Response[✅ Respuesta 200 OK<br/>txidLight, txidHeavy]
+    Disconnect --> Response[Respuesta 200 OK<br/>txidLight, txidHeavy]
     
-    LoadIdentity -->|Error| Error500[❌ Error 500<br/>Identidad no encontrada]
-    TxLight -->|Error| ErrorTx[❌ Error 500<br/>Fallo en transacción]
+    LoadIdentity -->|Error| Error500[Error 500<br/>Identidad no encontrada]
+    TxLight -->|Error| ErrorTx[Error 500<br/>Fallo en transacción]
     TxHeavy -->|Error| ErrorTx
-    Persist -->|Error| ErrorDB[❌ Error 500<br/>Fallo en DB]
+    Persist -->|Error| ErrorDB[Error 500<br/>Fallo en DB]
     
     Error400 --> End([Fin])
     Error500 --> End
@@ -57,3 +57,4 @@ flowchart TD
     style TxLight fill:#FFD700
     style TxHeavy fill:#FFA500
     style MeasureTime fill:#DDA0DD
+

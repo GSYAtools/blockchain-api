@@ -2,7 +2,7 @@
 flowchart TD
     Start([Cliente envía GET<br/>/leer-json/tipo/txid]) --> ValidateParams{Validar<br/>Parámetros}
     
-    ValidateParams -->|Error| Error400[❌ Error 400<br/>Faltan parámetros]
+    ValidateParams -->|Error| Error400[Error 400<br/>Faltan parámetros]
     ValidateParams -->|OK| ConnectFabric[Conectar a Fabric<br/>- Cargar perfil conexión<br/>- Autenticar wallet<br/>- Conectar gateway]
     
     ConnectFabric --> SelectChannel{Seleccionar<br/>Canal}
@@ -18,7 +18,7 @@ flowchart TD
     CheckType -->|Sí| QueryMySQL[Consultar MySQL<br/>SELECT data<br/>FROM light_model_data<br/>WHERE tx_id = ?]
     CheckType -->|No| GetBlock
     
-    QueryMySQL -->|No encontrado| Error404[❌ Error 404<br/>Datos no encontrados]
+    QueryMySQL -->|No encontrado| Error404[Error 404<br/>Datos no encontrados]
     QueryMySQL -->|Encontrado| GetJSON[Obtener JSON completo]
     
     GetJSON --> GetBlock[Obtener Detalles Bloque<br/>QSCC GetBlockByTxID]
@@ -29,11 +29,11 @@ flowchart TD
     
     BuildResponse --> Disconnect[Desconectar Gateway]
     
-    Disconnect --> Response[✅ Respuesta 200 OK<br/>JSON con todos los datos]
+    Disconnect --> Response[Respuesta 200 OK<br/>JSON con todos los datos]
     
-    ConnectFabric -->|Error| Error500[❌ Error 500<br/>Error conexión Fabric]
-    QueryCC -->|Error| ErrorCC[❌ Error 500<br/>Chaincode error]
-    GetBlock -->|Error| ErrorBlock[❌ Error 500<br/>Error obtener bloque]
+    ConnectFabric -->|Error| Error500[Error 500<br/>Error conexión Fabric]
+    QueryCC -->|Error| ErrorCC[Error 500<br/>Chaincode error]
+    GetBlock -->|Error| ErrorBlock[Error 500<br/>Error obtener bloque]
     
     Error400 --> End([Fin])
     Error404 --> End
@@ -53,3 +53,4 @@ flowchart TD
     style LightChannel fill:#FFD700
     style HeavyChannel fill:#FFA500
     style QueryMySQL fill:#DDA0DD
+

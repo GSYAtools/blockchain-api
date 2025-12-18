@@ -7,21 +7,21 @@ flowchart TD
     Q1 -->|Sí| Q2{¿Es crítico<br/>para auditoría<br/>o legal?}
     Q1 -->|No| Q3{¿Consultas<br/>frecuentes?}
     
-    Q2 -->|Sí| Heavy[🏋️ HEAVY MODEL<br/>Inmutabilidad total]
+    Q2 -->|Sí| Heavy[HEAVY MODEL<br/>Inmutabilidad total]
     Q2 -->|No| Q4{¿Tamaño de<br/>datos grande?}
     
-    Q3 -->|Sí| Light[🪶 LIGHT MODEL<br/>Consultas rápidas]
+    Q3 -->|Sí| Light[LIGHT MODEL<br/>Consultas rápidas]
     Q3 -->|No| Q5{¿Alta frecuencia<br/>de escritura?}
     
     Q4 -->|Sí| Light
     Q4 -->|No| Heavy
     
     Q5 -->|Sí| Light
-    Q5 -->|No| Hybrid[⚖️ Usar Ambos<br/>según necesidad]
+    Q5 -->|No| Hybrid[Usar Ambos<br/>según necesidad]
     
-    Heavy --> EndH[✅ Máxima seguridad<br/>y verificabilidad]
-    Light --> EndL[✅ Rendimiento<br/>y eficiencia]
-    Hybrid --> EndHy[✅ Balance<br/>óptimo]
+    Heavy --> EndH[Máxima seguridad<br/>y verificabilidad]
+    Light --> EndL[Rendimiento<br/>y eficiencia]
+    Hybrid --> EndHy[Balance<br/>óptimo]
     
     style Start fill:#e1f5ff
     style Heavy fill:#ffe1f0
@@ -30,3 +30,4 @@ flowchart TD
     style EndH fill:#90EE90
     style EndL fill:#90EE90
     style EndHy fill:#90EE90
+
