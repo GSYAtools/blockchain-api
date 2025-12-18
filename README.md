@@ -5,10 +5,9 @@
 ![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-## 📑 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [Introducción](#introducción)
-- [Diagramas Interactivos](#-diagramas-interactivos)
 - [Arquitectura del Sistema](#arquitectura-del-sistema)
 - [Requisitos Previos](#requisitos-previos)
 - [Instalación y Configuración](#instalación-y-configuración)
@@ -22,30 +21,30 @@
 - [Troubleshooting](#troubleshooting)
 - [Mejores Prácticas](#mejores-prácticas)
 
-## 📖 Introducción
+## Introducción
 
 Este proyecto es una **API REST empresarial** desarrollada en Node.js con Express, diseñada para interactuar con una red de **Hyperledger Fabric (HLF)**. Su propósito principal es almacenar y recuperar datos JSON en la blockchain de HLF de manera eficiente, utilizando contratos inteligentes (chaincodes) para operaciones de escritura y lectura garantizando inmutabilidad y trazabilidad.
 
 ### Características Principales
 
-✅ **Doble Modelo de Almacenamiento**: Sistema híbrido que combina blockchain y base de datos relacional  
-✅ **Trazabilidad Completa**: Cada transacción es registrada con timestamps en nanosegundos  
-✅ **Monitoreo Avanzado**: Integración con Prometheus para métricas de rendimiento en tiempo real  
-✅ **Arquitectura Escalable**: Separación de cargas de trabajo mediante canales dedicados  
-✅ **Interfaz Web Integrada**: Dashboard para visualización y gestión de registros  
-✅ **Seguridad Blockchain**: Autenticación mediante identidades de wallet de Fabric  
+**Doble Modelo de Almacenamiento**: Sistema híbrido que combina blockchain y base de datos relacional  
+**Trazabilidad Completa**: Cada transacción es registrada con timestamps en nanosegundos  
+**Monitoreo Avanzado**: Integración con Prometheus para métricas de rendimiento en tiempo real  
+**Arquitectura Escalable**: Separación de cargas de trabajo mediante canales dedicados  
+**Interfaz Web Integrada**: Dashboard para visualización y gestión de registros  
+**Seguridad Blockchain**: Autenticación mediante identidades de wallet de Fabric  
 
 ### Modelos de Datos: Light vs Heavy
 
 El proyecto implementa dos estrategias de almacenamiento optimizadas para diferentes casos de uso:
 
-#### 🪶 **LIGHT (Modelo Ligero)**
+#### LIGHT (Modelo Ligero)
 - **En Blockchain**: Solo almacena un hash SHA-256 del JSON (32 bytes)
 - **En MySQL**: Almacena el JSON completo para consultas rápidas
 - **Uso recomendado**: Datos que requieren consultas frecuentes pero inmutabilidad limitada
 - **Ventaja**: Reduce la carga en el ledger de blockchain, mejora el rendimiento
 
-#### 🏋️ **HEAVY (Modelo Pesado)**
+#### HEAVY (Modelo Pesado)
 - **En Blockchain**: Almacena el JSON completo de forma inmutable
 - **En MySQL**: Solo almacena metadatos (sin el JSON)
 - **Uso recomendado**: Datos críticos que requieren inmutabilidad total y auditabilidad
@@ -53,25 +52,11 @@ El proyecto implementa dos estrategias de almacenamiento optimizadas para difere
 
 Ambos modelos utilizan canales separados en HLF (`lightchannel` y `heavychannel`) para optimizar el rendimiento y permitir una gestión independiente de políticas de endorsement.
 
-## 📊 Diagramas Interactivos
-
-La documentación técnica completa con **diagramas Mermaid interactivos** está disponible en la carpeta [`docs/`](./docs/):
-
-| Diagrama | Vista Previa | Descripción |
-|----------|--------------|-------------|
-| 🏗️ **[Arquitectura del Sistema](./docs/arquitectura-sistema.md)** | ![Arquitectura](./docs/images/arquitectura-sistema.svg) | Vista completa de componentes y sus interacciones |
-| 🔄 **[Flujo de Guardar Datos](./docs/flujo-guardar-datos.md)** | ![Guardar](./docs/images/flujo-guardar-datos.svg) | Proceso detallado POST /guardar-json |
-| 📖 **[Flujo de Leer Datos](./docs/flujo-leer-datos.md)** | ![Leer](./docs/images/flujo-leer-datos.svg) | Proceso detallado GET /leer-json/:tipo/:txid |
-| 🪶🏋️ **[Modelo de Datos](./docs/modelo-datos.md)** | ![Modelo](./docs/images/modelo-datos-comparacion.svg) | Comparación Light vs Heavy con casos de uso |
-| 🔀 **[Secuencia Completa](./docs/secuencia-completa.md)** | ![Secuencia](./docs/images/secuencia-guardar.svg) | Diagramas de secuencia e interacciones |
-
-> 💡 **Tip**: Haz clic en cualquier diagrama para ver la documentación completa interactiva.
-
-## 🏗️ Arquitectura del Sistema
+## Arquitectura del Sistema
 
 [![Arquitectura del Sistema](./docs/images/arquitectura-sistema.svg)](./docs/arquitectura-sistema.md)
 
-> 📊 **[Ver diagrama interactivo completo](./docs/arquitectura-sistema.md)**
+> **[Ver diagrama interactivo completo](./docs/arquitectura-sistema.md)**
 
 ### Resumen de Arquitectura
 
@@ -100,7 +85,7 @@ La aplicación sigue una arquitectura de 3 capas con integración blockchain:
 | **Autenticación** | Fabric Wallet | Gestión de identidades y certificados |
 | **Frontend** | HTML5/CSS3/JS Vanilla | Dashboard de visualización |
 
-## ⚙️ Requisitos Previos
+## Requisitos Previos
 
 ### Software Necesario
 
@@ -129,7 +114,7 @@ La aplicación sigue una arquitectura de 3 capas con integración blockchain:
 - SQL y modelado de bases de datos
 - Conceptos de observabilidad (opcional)
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
 ### Paso 1: Clonar el Repositorio
 
@@ -240,11 +225,11 @@ curl http://localhost:3460/registros
 # Abrir navegador en http://localhost:3460
 ```
 
-## 📊 Modelo de Datos
+## Modelo de Datos
 
 [![Comparación de Modelos](./docs/images/modelo-datos-comparacion.svg)](./docs/modelo-datos.md)
 
-> 📊 **[Ver comparación visual completa](./docs/modelo-datos.md)**
+> **[Ver comparación visual completa](./docs/modelo-datos.md)**
 
 ### Comparativa de Modelos
 
@@ -253,7 +238,7 @@ curl http://localhost:3460/registros
 | **Dato en Blockchain** | Hash SHA-256 (32 bytes) | JSON completo |
 | **Dato en MySQL** | JSON completo | Solo metadatos |
 | **Tamaño en Ledger** | Fijo, mínimo | Variable, según JSON |
-| **Velocidad de escritura** | ⚡ Muy rápida | 🐢 Más lenta |
+| **Velocidad de escritura** | Muy rápida | Más lenta |
 | **Inmutabilidad del contenido** | Parcial (hash) | Total (JSON) |
 | **Verificabilidad** | Hash verificable | Contenido completo verificable |
 | **Costo de almacenamiento** | Bajo en blockchain | Alto en blockchain |
@@ -280,7 +265,7 @@ Ambos modelos aceptan cualquier estructura JSON válida. Ejemplo:
 }
 ```
 
-## 🔌 Endpoints de la API
+## Endpoints de la API
 
 ### 1. Guardar Datos en Blockchain
 
@@ -530,9 +515,9 @@ Accede desde tu navegador: `http://localhost:3460`
 
 **Descripción**: Ruta adicional para operaciones de datos (ver implementación en `routes/data.js`).
 
-## 🔄 Flujos de Operación Detallados
+## Flujos de Operación Detallados
 
-> 📊 **Diagramas interactivos disponibles**:
+> **Diagramas interactivos disponibles**:
 > - **[Flujo de Guardar Datos](./docs/flujo-guardar-datos.md)** - POST /guardar-json
 > - **[Flujo de Leer Datos](./docs/flujo-leer-datos.md)** - GET /leer-json/:tipo/:txid
 > - **[Diagramas de Secuencia](./docs/secuencia-completa.md)** - Interacciones completas
@@ -581,7 +566,7 @@ Accede desde tu navegador: `http://localhost:3460`
 - Retorna metadatos criptográficos del bloque (creator, signature)
 - QSCC permite acceso de bajo nivel al bloque completo
 
-## 🗄️ Estructura de Base de Datos
+## Estructura de Base de Datos
 
 ### Tabla: `light_model_data`
 
@@ -635,7 +620,7 @@ CREATE TABLE heavy_model_data (
 ```
 
 **Diferencias con `light_model_data`**:
-- ❌ **NO** tiene columna `data` (el JSON está en blockchain)
+- **NO** tiene columna `data` (el JSON está en blockchain)
 - Solo almacena metadatos y referencias
 
 **Ejemplo de registro**:
@@ -681,7 +666,7 @@ GROUP BY hour
 ORDER BY hour DESC;
 ```
 
-## ⛓️ Chaincode (Smart Contract)
+## Chaincode (Smart Contract)
 
 ### Nombre del Chaincode
 
@@ -759,7 +744,7 @@ cd fabric-samples/test-network
 ./network.sh deployCC -c heavychannel -ccn jsonstoragemodel -ccp ../chaincode/jsonstorage -ccl go
 ```
 
-## 📈 Monitoreo y Métricas
+## Monitoreo y Métricas
 
 ### Integración con Prometheus
 
@@ -820,7 +805,7 @@ Accede a `GET /metrics/tx/:txid` para visualizar:
 }
 ```
 
-## 🖥️ Interfaz Web
+## Interfaz Web
 
 ### Páginas Disponibles
 
@@ -837,10 +822,10 @@ Accede a `GET /metrics/tx/:txid` para visualizar:
 **Captura conceptual**:
 ```
 ┌─────────────────────────────────────────────┐
-│          📊 Blockchain API Dashboard        │
+│          Blockchain API Dashboard           │
 ├─────────────────────────────────────────────┤
 │                                             │
-│  🔍 Filtrar: [tipo] [fecha]  [🔄 Refresh]  │
+│  Filtrar: [tipo] [fecha]  [Refresh]         │
 │                                             │
 │  Registros LIGHT:                           │
 │  ┌──────────────────────────────────────┐  │
@@ -887,7 +872,7 @@ Accede a `GET /metrics/tx/:txid` para visualizar:
 - Manejo de errores con UI feedback
 - Navegación SPA (Single Page App)
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Problema: "Identidad no encontrada en wallet"
 
@@ -983,7 +968,7 @@ docker logs peer0.org1.example.com
 docker logs orderer.example.com
 ```
 
-## ✅ Mejores Prácticas
+## Mejores Prácticas
 
 ### Seguridad
 
